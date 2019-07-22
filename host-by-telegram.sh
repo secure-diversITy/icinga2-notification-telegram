@@ -75,30 +75,31 @@ SUBJECT="[$NOTIFICATIONTYPE] $SERVICEDISPLAYNAME on $HOSTDISPLAYNAME is $SERVICE
 
 ## Build the message itself
 NOTIFICATION_MESSAGE=$(cat << EOF
-$HOSTDISPLAYNAME ($HOSTALIAS) is $HOSTSTATE!
-When?    $LONGDATETIME
-Info?    $HOSTOUTPUT
-Host?    $HOSTALIAS
-IPv4?    $HOSTADDRESS
+$HOSTDISPLAYNAME ($HOSTALIAS) is <b>$HOSTSTATE!</b>
+====================================
+<b>When:</b>     $LONGDATETIME
+<b>Info:</b>        $HOSTOUTPUT
+<b>Host:</b>       $HOSTALIAS
+<b>IPv4:</b>       $HOSTADDRESS
 EOF
 )
 
 ## Is this host IPv6 capable?
 if [ -n "$HOSTADDRESS6" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-IPv6?    $HOSTADDRESS6"
+<b>IPv6:</b>       $HOSTADDRESS6"
 fi
 ## Are there any comments? Put them into the message!
 if [ -n "$NOTIFICATIONCOMMENT" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-Comment by $NOTIFICATIONAUTHORNAME:
+Comment (by <i>$NOTIFICATIONAUTHORNAME</i>):
   $NOTIFICATIONCOMMENT"
 fi
 ## Are we using Icinga Web 2? Put the URL into the message!
 if [ -n "$HAS_ICINGAWEB2" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-Get live status:
-  $HAS_ICINGAWEB2/monitoring/host/show?host=$HOSTALIAS"
+
+Show <a href=\"$HAS_ICINGAWEB2/monitoring/host/show?host=$HOSTALIAS\">live status</a>"
 fi
 ## Build the message's subject
 SUBJECT="[$NOTIFICATIONTYPE] Host $HOSTDISPLAYNAME is $HOSTSTATE!"
