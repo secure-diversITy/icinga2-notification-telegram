@@ -81,31 +81,33 @@ SUBJECT="[$NOTIFICATIONTYPE] $SERVICEDISPLAYNAME on $HOSTDISPLAYNAME is $SERVICE
 
 ## Build the message itself
 NOTIFICATION_MESSAGE=$(cat << EOF
-[$SERVICESTATE] $SERVICEDISPLAYNAME is $SERVICESTATE since $LONGDATETIME
-Host: $HOSTALIAS (IPv4 $HOSTADDRESS)
-More info: $SERVICEOUTPUT
+$SERVICEDISPLAYNAME ($SERVICENAME) on <i>$HOSTALIAS</i> is <b>$SERVICESTATE!</b>
+====================================
+<b>When:</b>     $LONGDATETIME
+<b>Host:</b>      $HOSTALIAS (IPv4 $HOSTADDRESS)
+<b>Details:</b>  $SERVICEOUTPUT
 EOF
 )
 
 ## Is this host IPv6 capable?
 if [ -n "$HOSTADDRESS6" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-IPv6?    $HOSTADDRESS6"
+<b>IPv6:</b>    $HOSTADDRESS6"
 fi
 
 ## Are there any comments? Put them into the message!
 if [ -n "$NOTIFICATIONCOMMENT" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
 
-Comment by $NOTIFICATIONAUTHORNAME:
+Comment (by <i>$NOTIFICATIONAUTHORNAME</i>):
   $NOTIFICATIONCOMMENT"
 fi
 
 ## Are we using Icinga Web 2? Put the URL into the message!
 if [ -n "$HAS_ICINGAWEB2" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-Get live status:
-  $HAS_ICINGAWEB2/monitoring/host/show?host=$HOSTALIAS"
+
+Show <a href=\"$HAS_ICINGAWEB2/monitoring/service/show?host=${HOSTALIAS}&service=${SERVICENAME}\">live status</a>"
 fi
 
 ## Are we verbose? Then put a message to syslog...
