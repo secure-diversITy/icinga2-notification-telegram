@@ -81,11 +81,13 @@ SUBJECT="[$NOTIFICATIONTYPE] $SERVICEDISPLAYNAME on $HOSTDISPLAYNAME is $SERVICE
 
 ## Build the message itself
 NOTIFICATION_MESSAGE=$(cat << EOF
-$SERVICEDISPLAYNAME ($SERVICENAME) on <i>$HOSTALIAS</i> is <b>$SERVICESTATE!</b>
-====================================
-<b>When:</b>     $LONGDATETIME
-<b>Host:</b>      $HOSTALIAS (IPv4 $HOSTADDRESS)
-<b>Details:</b>  $SERVICEOUTPUT
+<u><b>$SERVICEDISPLAYNAME</b> is <i>$SERVICESTATE</i>!</u>
+
+<b>Host:</b>    $HOSTDISPLAYNAME ($HOSTADDRESS)
+<b>Since:</b>   $LONGDATETIME
+<b>Details:</b>
+
+$SERVICEOUTPUT
 EOF
 )
 
